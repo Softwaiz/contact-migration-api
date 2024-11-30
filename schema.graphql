@@ -1,0 +1,14 @@
+type PhoneNumberValidationResult {
+    isValid: Boolean
+    countryCode: String
+    countryIso2: String
+    countryIso3: String
+    number: String
+    mustRewrite: Boolean
+    rewriteTo: String
+}
+
+
+type Query {
+    checkMigration(number: String): PhoneNumberValidationResult
+}

@@ -1,0 +1,48 @@
+name: Deploy Contact Migration Module to PRODUCTION
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.5.2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Docker Setup Buildx
+        uses: docker/setup-buildx-action@v2.7.0
+
+      - name: Docker Login
+        uses: docker/login-action@v2.2.0
+        with:
+          username: ${{secrets.DOCKER_USER}}
+          password: ${{secrets.DOCKER_PASSWORD}}
+
+      - name: Build and push Image
+        uses: docker/build-push-action@v4.1.1
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
+          tags: themx05/module-contact-migration:main
+
+      - name: Deploy on server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          timeout: 600s
+          host: ${{secrets.SERVER_HOST}}
+          username: ${{secrets.SERVER_USER}}
+          password: ${{secrets.SERVER_PASS}}
+          script: docker pull themx05/module-contact-migration:main && cd /var/apps/softwaiz && docker compose up -d && docker-clean
+          debug: true
