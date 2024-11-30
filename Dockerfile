@@ -11,7 +11,7 @@ FROM base AS builder
 WORKDIR /app
 COPY . ./
 RUN yarn
-RUN yarn run build
+RUN yarn build
 
 FROM base AS runner
 WORKDIR /app
