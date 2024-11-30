@@ -10,5 +10,5 @@ type PhoneNumberValidationResult {
 
 
 type Query {
-    checkMigration(number: String): PhoneNumberValidationResult
+    checkMigration(phoneNumber: String): PhoneNumberValidationResult
 }

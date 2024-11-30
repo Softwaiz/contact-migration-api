@@ -1,12 +1,12 @@
-import parsePhoneNumberFromString from "libphonenumber-js";
 import { PhoneUtils } from "../core/phone";
 import { ApplicationContext } from "../global";
 
 export const Resolvers = {
     Query: {
-        checkMigration: (root: any, args: { number: string }, context: ApplicationContext, info: any) => {
-            let entry = new PhoneUtils(args.number);
+        checkMigration: (root: any, args: { phoneNumber: string }, context: ApplicationContext, info: any) => {
+            let entry = new PhoneUtils(args.phoneNumber);
             let parsed = entry.parsedItem;
+
             return {
                 isValid: parsed?.isValid,
                 countryCode: parsed?.countryCode,

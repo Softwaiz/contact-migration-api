@@ -1,7 +1,7 @@
 import { phone, PhoneValidResult } from "phone";
-import parsePhoneNumber from "libphonenumber-js";
+import parsePhoneNumber, { PhoneNumber } from "libphonenumber-js";
 
-const PHONE_NUMBER_EXPRESSION = /^(?<has01>01)?(\s|-?)(?<number>(\d{2})(\s|-?)(\d{2})(\s|-?)(\d{2})(\s*|-?)(\d{2}))$/gm;
+const PHONE_NUMBER_EXPRESSION = '^(?<has01>01)?(\\s|-?)(?<number>(\\d{2})(\\s|-?)(\\d{2})(\\s|-?)(\\d{2})(\\s*|-?)(\\d{2}))$';
 
 interface TestPhoneResult extends PhoneValidResult {
     shouldRewrite: boolean;
@@ -18,12 +18,16 @@ export class PhoneUtils {
     get parsedItem() {
         let phoneNumber = this.item || '';
         let output = parsePhoneNumber(phoneNumber, 'BJ');
+        let expression = new RegExp(PHONE_NUMBER_EXPRESSION, 'gm');
 
         if (output) {
 
             if (output.country === 'BJ') {
-                let parsed = PHONE_NUMBER_EXPRESSION.exec(output.nationalNumber.toString());
+                console.log("parsePhone worked");
+                let parsed = expression.exec(output.nationalNumber.toString());
                 if (parsed?.groups) {
+
+                    console.log("Groups: ", parsed?.groups);
 
                     let groups = parsed.groups;
                     let has01 = Boolean(groups?.has01);
@@ -45,12 +49,10 @@ export class PhoneUtils {
             }
         }
 
-        let parsed = PHONE_NUMBER_EXPRESSION.exec(phoneNumber);
-
-        console.log("final groups: ", parsed?.groups);
-
+        let parsed = expression.exec(phoneNumber);
         if (parsed?.groups) {
             /// check if BJ number has 01 prefix
+            
             let groups = parsed.groups;
             let has01 = Boolean(groups?.has01);
             let finalNumber = groups?.number;
