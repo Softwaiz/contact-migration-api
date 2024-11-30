@@ -15,6 +15,7 @@
     "dev": "concurrently \"yarn watch-code\" \"yarn run-dev\" "
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "@types/lodash": "^4.17.10",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.1",
