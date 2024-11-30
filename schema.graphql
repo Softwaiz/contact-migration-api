@@ -1,4 +1,4 @@
-type PhoneNumberValidationResult {
+type ParsingResult {
     isValid: Boolean
     countryCode: String
     countryIso2: String
@@ -8,7 +8,12 @@ type PhoneNumberValidationResult {
     rewriteTo: String
 }
 
+type ParsingResultEntry {
+    number: String
+    result: ParsingResult
+}
 
 type Query {
-    checkMigration(phoneNumber: String): PhoneNumberValidationResult
+    parseOne(phoneNumber: String): ParsingResult
+    parseMultiple(phoneNumbers: [String!]): [ParsingResultEntry]
 }

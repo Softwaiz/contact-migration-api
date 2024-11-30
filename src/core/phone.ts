@@ -1,5 +1,5 @@
 import { phone, PhoneValidResult } from "phone";
-import parsePhoneNumber, { PhoneNumber } from "libphonenumber-js";
+import parsePhoneNumber from "libphonenumber-js";
 
 const PHONE_NUMBER_EXPRESSION = '^(?<has01>01)?(\\s|-?)(?<number>(\\d{2})(\\s|-?)(\\d{2})(\\s|-?)(\\d{2})(\\s*|-?)(\\d{2}))$';
 
@@ -52,7 +52,7 @@ export class PhoneUtils {
         let parsed = expression.exec(phoneNumber);
         if (parsed?.groups) {
             /// check if BJ number has 01 prefix
-            
+
             let groups = parsed.groups;
             let has01 = Boolean(groups?.has01);
             let finalNumber = groups?.number;
